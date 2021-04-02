@@ -4,34 +4,42 @@ import Interfaces.TwoWayListItem;
 
 public class TwoWayIterator<T> implements Interfaces.TwoWayIterator<T> {
     protected TwoWayListItem<T> currentListItem;
+    private boolean _hasIteratedOnce;
 
     TwoWayIterator(TwoWayListItem<T> listItem){
         currentListItem = listItem;
+        _hasIteratedOnce = false;
     }
 
     public T getNext() {
         T currentItem = currentListItem.getItem();
         currentListItem = currentListItem.getNext();
+        _hasIteratedOnce = true;
         return currentItem;
     }
 
     public T getPrevious(){
+        T currentItem = currentListItem.getItem();
         currentListItem = currentListItem.getPrevious();
-        return currentListItem.getItem();
+        _hasIteratedOnce = true;
+        return currentItem;
     }
 
     public boolean hasNext() {
-        if(isCurrentOrNextListItemNull()){
-            return false;
-        }
-        return true;
+        // TODO: проверть тестами это место, ибо currentListItem теперь чаще может быть null-ом
+        return !isCurrentListItemNull();
+        // if (!hasIteratedOnce()){
+        //     return !isCurrentListItemNull();
+        // }
+        // return !isCurrentOrNextListItemNull();
     }
 
     public boolean hasPrevious(){
-        if(isCurrentOrPreviousListItemNull()){
-            return false;
-        }
-        return true;
+        return !isCurrentListItemNull();
+        // if(isCurrentOrPreviousListItemNull()){
+        //     return false;
+        // }
+        // return true;
     }
 
     private boolean isCurrentOrNextListItemNull(){
@@ -47,6 +55,10 @@ public class TwoWayIterator<T> implements Interfaces.TwoWayIterator<T> {
     }
 
     public void remove() {
+        // TODO: реализовать удаление!
+    }
 
+    protected boolean hasIteratedOnce(){
+        return _hasIteratedOnce;
     }
 }

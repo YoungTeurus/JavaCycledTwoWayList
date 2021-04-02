@@ -110,11 +110,10 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
             return 1;
         }
 
-        // TODO: как-нибудь вынести этот код отсюда?
         // Проходимся по списку, инкрементируя length на каждом шаге:
         AtomicInteger length = new AtomicInteger(0);
 
-        Function<T, Boolean> increaseLength = o -> {
+        Function<T, Boolean> increaseLength = item -> {
             length.getAndIncrement();
             return true;
         };

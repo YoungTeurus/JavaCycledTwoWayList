@@ -11,7 +11,11 @@ class CycledTwoWayListTest {
     @Test
     void append() {
         CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        assertEquals(0, testList.length());
         testList.append(1);
+        assertEquals(1, testList.length());
+        assertEquals(0, testList.indexOf(1));
+        assertEquals(CycledTwoWayList.NOT_FOUND, testList.indexOf(6));
         testList.append(2);
         testList.append(3);
         testList.append(4);
@@ -82,6 +86,14 @@ class CycledTwoWayListTest {
         testList.append(6);
 
         assertFalse(testList.isEmpty());
+
+        testList.remove(5);
+
+        assertFalse(testList.isEmpty());
+
+        testList.remove(6);
+
+        assertTrue(testList.isEmpty());
     }
 
     @Test
@@ -100,6 +112,12 @@ class CycledTwoWayListTest {
         assertEquals(3, testList.indexOf(4));
         assertEquals(4, testList.indexOf(5));
         assertEquals(5, testList.indexOf(6));
+
+        testList.remove(4);
+        testList.remove(2);
+
+        assertEquals(0, testList.indexOf(1));
+        assertEquals(3, testList.indexOf(6));
     }
 
     @Test
