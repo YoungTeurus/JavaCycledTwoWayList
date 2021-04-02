@@ -3,8 +3,8 @@ package CycledTwoWayList;
 import Interfaces.TwoWayListItem;
 
 public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements Interfaces.CycledTwoWayIterator<T> {
-    TwoWayListItem<T> startListItem;
-    boolean hasIteratedOnce;
+    private TwoWayListItem<T> startListItem;
+    private boolean hasIteratedOnce;
 
     CycledTwoWayIterator(TwoWayListItem<T> listItem) {
         super(listItem);
@@ -46,5 +46,14 @@ public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements Interf
 
     private boolean isCurrentEqualsStartItem(){
         return currentListItem == startListItem;
+    }
+
+
+    boolean isCurrentItemEquals(T other){
+        return compareCurrentItem(other) == 0;
+    }
+
+    int compareCurrentItem(T compareTo){
+        return currentListItem.compareItem(compareTo);
     }
 }

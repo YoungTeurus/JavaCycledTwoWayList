@@ -10,8 +10,9 @@ public class TwoWayIterator<T> implements Interfaces.TwoWayIterator<T> {
     }
 
     public T getNext() {
+        T currentItem = currentListItem.getItem();
         currentListItem = currentListItem.getNext();
-        return currentListItem.getItem();
+        return currentItem;
     }
 
     public T getPrevious(){

@@ -33,6 +33,12 @@ public class TwoWayListItem<T> implements Interfaces.TwoWayListItem<T> {
         return next;
     }
 
+    @Override
+    public int compareItem(T other) {
+        // TODO: ненадёжная конструкция!
+        return ((Comparable<T>)item).compareTo(other);
+    }
+
     public TwoWayListItem<T> getPrevious() {
         return previous;
     }

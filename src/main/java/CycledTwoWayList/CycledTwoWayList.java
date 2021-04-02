@@ -2,7 +2,9 @@ package CycledTwoWayList;
 
 import Interfaces.TwoWayList;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -12,6 +14,8 @@ import java.util.function.Function;
 public class CycledTwoWayList<T> implements TwoWayList<T> {
     private TwoWayListItem<T> head;
     private TwoWayListItem<T> tail;
+
+    static int NOT_FOUND = -1;
 
     public CycledTwoWayList(){
         head = null;
@@ -41,7 +45,25 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
     }
 
     public void remove(T object) {
+        TwoWayListItem<T> listItemWithObject = findListItemWithItemEqualsTo(object);
+        if(listItemWithObject == null){
+            return;
+        }
+        remove(listItemWithObject);
+    }
 
+    private TwoWayListItem<T> findListItemWithItemEqualsTo(T object){
+        // TODO: убрать повторение кода (см. map) - проблема с получением доступа к it.currentListItem (нарушение инкапсуляции)
+        // TODO: убрать уродское приведение типа
+        CycledTwoWayIterator<T> it = (CycledTwoWayIterator<T>) iterator();
+        while (it.hasNext() && !it.reachedEnd()){
+            if (it.isCurrentItemEquals(object)){
+                // TODO: убрать уродское приведение типа
+                return (TwoWayListItem<T>)it.currentListItem;
+            }
+            it.getNext();
+        }
+        return null;
     }
 
     private void remove(TwoWayListItem<T> listItem){
@@ -83,45 +105,67 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
         if (isEmpty()){
             return 0;
         }
-        // Если голова зацикленна сама на себя - в списке находится лишь один элемент
-        if (head.isSelfCycled()){
+        // Если голова зацикленна сама на себя - в списке находится лишь один элемент:
+        if (isHeadSelfCycled()){
             return 1;
         }
 
-        // int length = 0;
+        // TODO: как-нибудь вынести этот код отсюда?
+        // Проходимся по списку, инкрементируя length на каждом шаге:
         AtomicInteger length = new AtomicInteger(0);
 
-        // CycledTwoWayIterator<T> it = iterator();
-        // while (it.hasNext() && !it.reachedEnd()){
-        //     length++;
-        //     it.getNext();
-        // }
-
-        map(obj -> {
+        Function<T, Boolean> increaseLength = o -> {
             length.getAndIncrement();
-            return null;
-        });
+            return true;
+        };
 
-        // return length;
+        map(increaseLength);
+
         return length.get();
-    }
-
-    public void map(Function<T, Void> functionToApply){
-        CycledTwoWayIterator<T> it = iterator();
-        while (it.hasNext() && !it.reachedEnd()){
-            functionToApply.apply(it.getNext());
-        }
     }
 
     public boolean isEmpty(){
         return head == null || tail == null;
     }
 
-    public int indexOf(T object) {
-        return 0;
+    private boolean isHeadSelfCycled(){
+        return head.isSelfCycled();
     }
 
-    public CycledTwoWayIterator<T> iterator() {
+    // Применяет функцию functionToApply для всех элементов списка.
+    // Функции передаётся текущее значение элемента списка.
+    // Если функция возвращает false, обход завершается преждевременно.
+    public void map(Function<T, Boolean> functionToApply){
+        Interfaces.CycledTwoWayIterator<T> it = iterator();
+        while (it.hasNext() && !it.reachedEnd()){
+            if(!functionToApply.apply(it.getNext())){
+                break;
+            }
+        }
+    }
+
+    public int indexOf(T object) {
+        AtomicInteger index = new AtomicInteger(0);
+        AtomicBoolean hasFoundObject = new AtomicBoolean(false);
+
+        Function<T, Boolean> increaseIndexWhileObjectNotFound = item -> {
+            if(item.equals(object)){
+                hasFoundObject.set(true);
+                return false;  // Как-только нашли нужный объект прекращаем обход
+            }
+            index.getAndIncrement();
+            return true;
+        };
+
+        this.map(increaseIndexWhileObjectNotFound);
+
+        if (!hasFoundObject.get()){
+            return NOT_FOUND;
+        }
+        return index.get();
+    }
+
+    public Interfaces.CycledTwoWayIterator<T> iterator() {
         return new CycledTwoWayIterator<T>(this.head);
     }
 }
