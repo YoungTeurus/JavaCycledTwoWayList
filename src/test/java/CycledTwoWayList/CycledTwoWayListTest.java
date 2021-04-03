@@ -2,6 +2,7 @@ package CycledTwoWayList;
 
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -135,5 +136,21 @@ class CycledTwoWayListTest {
         testList.map(item -> {sum.getAndAdd(item); return true;});
 
         assertEquals(1+2+3+4+5+6, sum.get());
+    }
+
+    @Test
+    void atIndex(){
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        testList.append(1);
+        testList.append(2);
+        testList.append(3);
+        testList.append(4);
+        testList.append(5);
+        testList.append(6);
+
+        assertEquals(3, testList.atIndex(2));
+        assertEquals(6, testList.atIndex(5));
+        assertNull(testList.atIndex(30));
+        assertThrows(InvalidParameterException.class, () -> testList.atIndex(-1));
     }
 }

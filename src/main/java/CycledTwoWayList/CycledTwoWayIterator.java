@@ -24,23 +24,14 @@ public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements Interf
 
      */
     public boolean reachedEnd(){
-        return !hasNext() || isCurrentEqualsStartItemAndHasIteratedOnce();
+        return !hasNext() || isNextEqualsStartItemAndHaveMovedCurrentItem();
     }
 
-    private boolean isCurrentEqualsStartItemAndHasIteratedOnce(){
-        return hasIteratedOnce() && isCurrentEqualsStartItem();
+    private boolean isNextEqualsStartItemAndHaveMovedCurrentItem(){
+        return haveMovedCurrentItem() && isNextEqualsStartItem();
     }
 
-    private boolean isCurrentEqualsStartItem(){
-        return currentListItem == startListItem;
-    }
-
-
-    boolean isCurrentItemEquals(T other){
-        return compareCurrentItem(other) == 0;
-    }
-
-    int compareCurrentItem(T compareTo){
-        return currentListItem.compareItem(compareTo);
+    private boolean isNextEqualsStartItem(){
+        return currentListItem.getNext() == startListItem;
     }
 }

@@ -5,39 +5,43 @@ import Interfaces.ITwoWayListItem;
 
 public class TwoWayIterator<T> implements ITwoWayIterator<T> {
     protected ITwoWayListItem<T> currentListItem;
-    private boolean _hasIteratedOnce;
+    private boolean _haveToMoveCurrentItem;
+    private boolean _haveMovedCurrentItem;
 
     TwoWayIterator(ITwoWayListItem<T> listItem){
         currentListItem = listItem;
-        _hasIteratedOnce = false;
+        _haveToMoveCurrentItem = false;
+        _haveMovedCurrentItem = false;
     }
 
     public T getNext() {
-        if(hasIteratedOnce()){
+        if(haveToMoveCurrentItem()){
             currentListItem = currentListItem.getNext();
+            _haveMovedCurrentItem = true;
         }
-        _hasIteratedOnce = true;
+        _haveToMoveCurrentItem = true;
         return currentListItem.getItem();
     }
 
     public T getPrevious(){
-        if(hasIteratedOnce()){
+        if(haveToMoveCurrentItem()){
             currentListItem = currentListItem.getPrevious();
+            _haveMovedCurrentItem = true;
         }
-        _hasIteratedOnce = true;
+        _haveToMoveCurrentItem = true;
         return currentListItem.getItem();
     }
 
     public boolean hasNext() {
         // TODO: проверть тестами это место, ибо currentListItem теперь чаще может быть null-ом
-        if (hasIteratedOnce()){
+        if (haveToMoveCurrentItem()){
             return !isCurrentOrNextListItemNull();
         }
         return !isCurrentListItemNull();
     }
 
     public boolean hasPrevious(){
-        if (hasIteratedOnce()){
+        if (haveToMoveCurrentItem()){
             return !isCurrentOrPreviousListItemNull();
         }
         return !isCurrentListItemNull();
@@ -56,7 +60,7 @@ public class TwoWayIterator<T> implements ITwoWayIterator<T> {
     }
 
     public void remove() throws Exception {
-        if(!hasIteratedOnce()){
+        if(!haveToMoveCurrentItem()){
             throw new Exception("You should iterate at least once to remove element!");
         }
         if(isCurrentListItemNull()){
@@ -75,10 +79,14 @@ public class TwoWayIterator<T> implements ITwoWayIterator<T> {
         TwoWayListItem<T> currentListItem = (TwoWayListItem<T>)this.currentListItem;
         this.currentListItem = currentListItem.getNext();
         currentListItem.connectPreviousToNextAndResetConnections();
-        _hasIteratedOnce = false;  // Сбрасываем флаг итерации, чтобы при следующем getNext() не сдвинуться с нового элемента.
+        _haveToMoveCurrentItem = false;  // Сбрасываем флаг итерации, чтобы при следующем getNext() не сдвинуться с нового элемента.
     }
 
-    protected boolean hasIteratedOnce(){
-        return _hasIteratedOnce;
+    protected boolean haveToMoveCurrentItem(){
+        return _haveToMoveCurrentItem;
+    }
+
+    protected boolean haveMovedCurrentItem(){
+        return _haveMovedCurrentItem;
     }
 }
