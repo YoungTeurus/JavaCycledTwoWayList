@@ -1,8 +1,8 @@
 package Interfaces;
 
-public interface ListItem<T> {
+public interface IListItem<T> {
     T getItem();
-    ListItem<T> getNext();
+    IListItem<T> getNext();
 
     int compareItem(T other);
 }

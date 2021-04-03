@@ -1,17 +1,16 @@
 package CycledTwoWayList;
 
-import Interfaces.TwoWayList;
+import Interfaces.ITwoWayList;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
  * Циклический двусвязный список.
  * @author Азаренко Сергей, 18-ИВТ-1
  */
-public class CycledTwoWayList<T> implements TwoWayList<T> {
+public class CycledTwoWayList<T> implements ITwoWayList<T> {
     private TwoWayListItem<T> head;
     private TwoWayListItem<T> tail;
 
@@ -136,7 +135,7 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
     // Если функция возвращает false, обход завершается преждевременно.
     public void map(Function<T, Boolean> functionToApply){
         Interfaces.CycledTwoWayIterator<T> it = iterator();
-        while (it.hasNext() && !it.reachedEnd()){
+        while (!it.reachedEnd()){
             if(!functionToApply.apply(it.getNext())){
                 break;
             }

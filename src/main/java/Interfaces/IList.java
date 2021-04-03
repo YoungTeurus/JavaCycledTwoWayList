@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface List<T> {
+public interface IList<T> {
     void append(T object);
     void remove(T object);
 

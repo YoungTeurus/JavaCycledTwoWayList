@@ -1,6 +1,6 @@
 package CycledTwoWayList;
 
-public class TwoWayListItem<T> implements Interfaces.TwoWayListItem<T> {
+public class TwoWayListItem<T> implements Interfaces.ITwoWayListItem<T> {
     private TwoWayListItem<T> next;
     private TwoWayListItem<T> previous;
     private T item;
@@ -48,7 +48,7 @@ public class TwoWayListItem<T> implements Interfaces.TwoWayListItem<T> {
     }
 
     boolean isSelfCycled(){
-        return next == this;
+        return next == this || previous == this;
     }
 
     void connectPreviousToNextAndResetConnections(){

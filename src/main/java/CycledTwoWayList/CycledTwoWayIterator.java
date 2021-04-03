@@ -1,12 +1,12 @@
 package CycledTwoWayList;
 
-import Interfaces.TwoWayListItem;
+import Interfaces.ITwoWayListItem;
 
 public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements Interfaces.CycledTwoWayIterator<T> {
-    private TwoWayListItem<T> startListItem;
+    private ITwoWayListItem<T> startListItem;
 
 
-    CycledTwoWayIterator(TwoWayListItem<T> listItem) {
+    CycledTwoWayIterator(ITwoWayListItem<T> listItem) {
         super(listItem);
         startListItem = listItem;
     }
