@@ -1,6 +1,6 @@
-package CycledTwoWayList;
+package implemitations;
 
-public class TwoWayListItem<T> implements Interfaces.ITwoWayListItem<T> {
+public class TwoWayListItem<T> implements interfaces.ITwoWayListItem<T> {
     private TwoWayListItem<T> next;
     private TwoWayListItem<T> previous;
     private T item;

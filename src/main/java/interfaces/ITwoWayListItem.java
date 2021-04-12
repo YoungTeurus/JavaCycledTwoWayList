@@ -1,4 +1,4 @@
-package Interfaces;
+package interfaces;
 
 public interface ITwoWayListItem<T> extends IListItem<T> {
     @Override

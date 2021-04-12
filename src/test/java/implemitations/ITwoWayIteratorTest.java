@@ -1,4 +1,4 @@
-package CycledTwoWayList;
+package implemitations;
 
 import org.junit.jupiter.api.Test;
 

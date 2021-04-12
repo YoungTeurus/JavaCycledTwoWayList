@@ -1,7 +1,7 @@
-package CycledTwoWayList;
+package implemitations;
 
-import Interfaces.ITwoWayIterator;
-import Interfaces.ITwoWayListItem;
+import interfaces.ITwoWayIterator;
+import interfaces.ITwoWayListItem;
 
 public class TwoWayIterator<T> implements ITwoWayIterator<T> {
     protected ITwoWayListItem<T> currentListItem;

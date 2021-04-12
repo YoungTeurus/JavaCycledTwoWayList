@@ -1,6 +1,6 @@
-package Interfaces;
+package interfaces;
 
-import CycledTwoWayList.CycledTwoWayIterator;
+import implemitations.CycledTwoWayIterator;
 
 public interface ITwoWayList<T> extends IList<T> {
     CycledTwoWayIterator<T> iteratorTail();

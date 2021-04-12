@@ -1,7 +1,7 @@
-package CycledTwoWayList;
+package implemitations;
 
-import Interfaces.ITwoWayList;
-import Interfaces.ITwoWayListItem;
+import interfaces.ITwoWayList;
+import interfaces.ITwoWayListItem;
 
 import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -153,7 +153,7 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
         AtomicReference<T> returnItem = new AtomicReference<>(null);
         AtomicInteger itemsLeft = new AtomicInteger(index);
         map(item -> {
-            if (((Integer)itemsLeft.getAndDecrement()).equals(0)){
+            if (((Integer)itemsLeft.getAndDecrement()).equals(0)){  // Если оставшееся число элементов для перебора стало равным 0...
                 returnItem.set(item);
                 return false;
             }

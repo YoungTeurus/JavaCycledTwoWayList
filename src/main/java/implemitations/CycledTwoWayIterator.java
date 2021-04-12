@@ -1,8 +1,8 @@
-package CycledTwoWayList;
+package implemitations;
 
-import Interfaces.ITwoWayListItem;
+import interfaces.ITwoWayListItem;
 
-public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements Interfaces.CycledTwoWayIterator<T> {
+public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements interfaces.CycledTwoWayIterator<T> {
     private ITwoWayListItem<T> startListItem;
 
 
