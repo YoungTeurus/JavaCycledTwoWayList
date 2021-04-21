@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface ITwoWayIterator<T> extends Iterator<T> {
+public interface TwoWayIterator<T> extends Iterator<T> {
     T getPrevious();
     boolean hasPrevious();
 }

@@ -1,7 +1,7 @@
 package implemitations;
 
-import interfaces.ITwoWayList;
-import interfaces.ITwoWayListItem;
+import interfaces.TwoWayList;
+import interfaces.TwoWayListItem;
 
 import java.security.InvalidParameterException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,13 +25,17 @@ import java.util.function.Function;
  *
  * @author Азаренко Сергей, 18-ИВТ-1
  */
-public class CycledTwoWayList<T> implements ITwoWayList<T> {
-    private TwoWayListItem<T> head;
-    private TwoWayListItem<T> tail;
+public class CycledTwoWayList<T> implements TwoWayList<T> {
+    private implemitations.TwoWayListItem<T> head;
+    private implemitations.TwoWayListItem<T> tail;
 
     static int NOT_FOUND = -1;
 
     public CycledTwoWayList(){
+        makeEmpty();
+    }
+
+    private void makeEmpty(){
         head = null;
         tail = null;
     }
@@ -45,14 +49,14 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
     }
 
     private void createdSelfCycledHeadTail(T object){
-        head = new TwoWayListItem<>(object);
+        head = new implemitations.TwoWayListItem<>(object);
         head.setNext(head);
         head.setPrevious(head);
         tail = head;
     }
 
     private void createAndConnectNewListItem(T object){
-        TwoWayListItem<T> newListItem = new TwoWayListItem<T>(head, tail, object);
+        implemitations.TwoWayListItem<T> newListItem = new implemitations.TwoWayListItem<>(head, tail, object);
         head.setPrevious(newListItem);
         tail.setNext(newListItem);
         tail = newListItem;
@@ -63,18 +67,18 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
     }
 
     private void findAndRemoveListItemWithItemEqualsTo(T object){
-        TwoWayListItem<T> listItemWithObject = findListItemWithItemEqualsTo(object);
+        implemitations.TwoWayListItem<T> listItemWithObject = findListItemWithItemEqualsTo(object);
         removeListItem(listItemWithObject);
     }
 
-    private TwoWayListItem<T> findListItemWithItemEqualsTo(T object){
-        AtomicReference<TwoWayListItem<T>> foundListItem = new AtomicReference<>(null);
+    private implemitations.TwoWayListItem<T> findListItemWithItemEqualsTo(T object){
+        AtomicReference<implemitations.TwoWayListItem<T>> foundListItem = new AtomicReference<>(null);
 
         mapThroughListItems(listItem -> {
             // Если содержимое listItem равно object, сохраняем ссылку на него в foundListItem и выходим из цикла,
             // иначе - проходим по списку до конца.
             if(isItemInListItemEquals(listItem, object)){
-                foundListItem.set((TwoWayListItem<T>)listItem);  // TODO: убрать приведение типа?
+                foundListItem.set((implemitations.TwoWayListItem<T>)listItem);  // TODO: убрать приведение типа?
                 return false;
             }
             return true;
@@ -83,11 +87,17 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
         return foundListItem.get();
     }
 
-    private boolean isItemInListItemEquals(ITwoWayListItem<T> listItem, T object){
-        return listItem.compareItem(object) == 0;
+    private boolean isItemInListItemEquals(TwoWayListItem<T> listItem, T object){
+        try {
+            return listItem.compareItem(object) == 0;
+        }
+        catch (Exception e){
+            // Если данные несравнимы, то они всегда не равны.
+            return false;
+        }
     }
 
-    private void removeListItem(TwoWayListItem<T> listItem){
+    private void removeListItem(implemitations.TwoWayListItem<T> listItem){
         if (listItem == null){
             return;
         }
@@ -103,12 +113,7 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
         listItem.connectPreviousToNextAndResetConnections();
     }
 
-    private void makeEmpty(){
-        head = null;
-        tail = null;
-    }
-
-    private void correctHeadOrTailIfHeadOrTailEquals(TwoWayListItem<T> listItem){
+    private void correctHeadOrTailIfHeadOrTailEquals(implemitations.TwoWayListItem<T> listItem){
         if(isHeadListItem(listItem)){
             head = listItem.getNext();
         }
@@ -117,11 +122,11 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
         }
     }
 
-    private boolean isHeadListItem(TwoWayListItem<T> listItem){
+    private boolean isHeadListItem(implemitations.TwoWayListItem<T> listItem){
         return listItem == head;
     }
 
-    private boolean isTailListItem(TwoWayListItem<T> listItem){
+    private boolean isTailListItem(implemitations.TwoWayListItem<T> listItem){
         return listItem == tail;
     }
 
@@ -196,20 +201,19 @@ public class CycledTwoWayList<T> implements ITwoWayList<T> {
         return new CycledTwoWayIterator<>(this.head);
     }
     public CycledTwoWayIterator<T> iteratorTail(){
-        return new CycledTwoWayIterator<T>(tail);
+        return new CycledTwoWayIterator<>(tail);
     }
 
-    // Применяет функцию functionToApply для каждого содержимого элемента списка.
-    // Функции передаётся текущее содержимое элемента списка.
-    // Если функция возвращает false, обход завершается преждевременно.
     public void map(Function<T, Boolean> functionToApply){
         mapThroughListItems(listItem -> functionToApply.apply(listItem.getItem()));
     }
 
-    // Применяет функцию functionToApply для каждого элемента списка.
-    // Функции передаётся текущий элемент списка.
-    // Если функция возвращает false, обход завершается преждевременно.
-    private void mapThroughListItems(Function<ITwoWayListItem<T>, Boolean> functionToApply){
+    /**
+     * Применяет функцию functionToApply для каждого элемента списка. Функции передаётся текущий элемент списка.
+     * Если функция возвращает false, обход завершается преждевременно.
+     * @param functionToApply Функция для применения.
+     */
+    private void mapThroughListItems(Function<TwoWayListItem<T>, Boolean> functionToApply){
         CycledTwoWayIterator<T> it = iterator();
         while (!it.reachedEnd()){
             it.getNext();

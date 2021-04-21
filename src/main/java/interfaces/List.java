@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.function.Function;
 
-public interface IList<T> {
+public interface List<T> {
     /**
      * Добавляет элемент в конец списка.
      * @param object Элемент для добавления.
@@ -23,15 +23,35 @@ public interface IList<T> {
     int indexOf(T object);
 
     /**
-     * Возварщает элемент из списка на индексе index.
+     * Возвращает элемент из списка на индексе index.
      * @param index Индекс элемента в списке.
      * @return Элемент на указанном индексе или null, если индекс находится за пределами списка.
      */
     T atIndex(int index);
 
+    /**
+     * Возвращает длину списка.
+     * @return Длина списка.
+     */
     int length();
+
+    /**
+     * Проверяет, является ли список пустым.
+     * @return True, если список пуст, иначе - false.
+     */
     boolean isEmpty();
 
+    /**
+     * Вовзвращает соответствующий итератор для списка.
+     * @return Итератор для списка.
+     */
     Iterator<T> iterator();
+
+    /**
+     * Применяет функцию functionToApply для каждого содержимого элемента списка.
+     * Функции передаётся текущее содержимое элемента списка.
+     * Если функция возвращает false, обход завершается преждевременно.
+     * @param functionToApply Функция для применения.
+     */
     void map(Function<T, Boolean> functionToApply);
 }

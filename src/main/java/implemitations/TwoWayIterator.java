@@ -1,14 +1,13 @@
 package implemitations;
 
-import interfaces.ITwoWayIterator;
-import interfaces.ITwoWayListItem;
+import interfaces.TwoWayListItem;
 
-public class TwoWayIterator<T> implements ITwoWayIterator<T> {
-    protected ITwoWayListItem<T> currentListItem;
+public class TwoWayIterator<T> implements interfaces.TwoWayIterator<T> {
+    protected TwoWayListItem<T> currentListItem;
     private boolean _haveToMoveCurrentItem;
     private boolean _haveMovedCurrentItem;
 
-    TwoWayIterator(ITwoWayListItem<T> listItem){
+    TwoWayIterator(TwoWayListItem<T> listItem){
         currentListItem = listItem;
         _haveToMoveCurrentItem = false;
         _haveMovedCurrentItem = false;
@@ -68,15 +67,15 @@ public class TwoWayIterator<T> implements ITwoWayIterator<T> {
         }
 
         // Если элемент зациклен на самого себя, значит он единственный, достаточно удалить только его:
-        if(((TwoWayListItem<T>)currentListItem).isSelfCycled()){
-            ((TwoWayListItem<T>) currentListItem).resetConnections();
+        if(((implemitations.TwoWayListItem<T>)currentListItem).isSelfCycled()){
+            ((implemitations.TwoWayListItem<T>) currentListItem).resetConnections();
         } else {
             replaceCurrentListItemWithNextAndRemoveCurrent();
         }
     }
 
     private void replaceCurrentListItemWithNextAndRemoveCurrent(){
-        TwoWayListItem<T> currentListItem = (TwoWayListItem<T>)this.currentListItem;
+        implemitations.TwoWayListItem<T> currentListItem = (implemitations.TwoWayListItem<T>)this.currentListItem;
         this.currentListItem = currentListItem.getNext();
         currentListItem.connectPreviousToNextAndResetConnections();
         _haveToMoveCurrentItem = false;  // Сбрасываем флаг итерации, чтобы при следующем getNext() не сдвинуться с нового элемента.

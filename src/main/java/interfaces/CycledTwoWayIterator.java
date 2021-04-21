@@ -1,5 +1,5 @@
 package interfaces;
 
-public interface CycledTwoWayIterator<T> extends ITwoWayIterator<T> {
+public interface CycledTwoWayIterator<T> extends TwoWayIterator<T> {
     boolean reachedEnd();
 }

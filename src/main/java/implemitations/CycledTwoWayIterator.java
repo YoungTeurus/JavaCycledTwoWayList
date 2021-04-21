@@ -1,12 +1,12 @@
 package implemitations;
 
-import interfaces.ITwoWayListItem;
+import interfaces.TwoWayListItem;
 
 public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements interfaces.CycledTwoWayIterator<T> {
-    private ITwoWayListItem<T> startListItem;
+    private final TwoWayListItem<T> startListItem;
 
 
-    CycledTwoWayIterator(ITwoWayListItem<T> listItem) {
+    CycledTwoWayIterator(TwoWayListItem<T> listItem) {
         super(listItem);
         startListItem = listItem;
     }
@@ -22,6 +22,9 @@ public class CycledTwoWayIterator<T> extends TwoWayIterator<T> implements interf
     TwoWayIterator  ->   CycledTwoWayIterator
      (getPrevious)
 
+    UDP: Вроде как решение найдено: можно создать поле "Memory memoryForStartItem;" в Iterator.
+    Когда оно равно null, Iterator работает как обычный итератор, когда не null - сохраняем в нём первый listItem и
+    проверяем memory в getNext()/getPrevious().
      */
     public boolean reachedEnd(){
         return !hasNext() || isNextEqualsStartItemAndHaveMovedCurrentItem();

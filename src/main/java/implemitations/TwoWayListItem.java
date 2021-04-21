@@ -1,6 +1,6 @@
 package implemitations;
 
-public class TwoWayListItem<T> implements interfaces.ITwoWayListItem<T> {
+public class TwoWayListItem<T> implements interfaces.TwoWayListItem<T> {
     private TwoWayListItem<T> next;
     private TwoWayListItem<T> previous;
     private T item;
@@ -34,8 +34,11 @@ public class TwoWayListItem<T> implements interfaces.ITwoWayListItem<T> {
     }
 
     @Override
-    public int compareItem(T other) {
-        // TODO: ненадёжная конструкция!
+    public int compareItem(T other) throws Exception {
+        if(!(item instanceof Comparable)){
+            throw new Exception("TwoWayListItem::compareItem: other не реализует интерфейс Comparable.");
+        }
+        //noinspection unchecked
         return ((Comparable<T>)item).compareTo(other);
     }
 
