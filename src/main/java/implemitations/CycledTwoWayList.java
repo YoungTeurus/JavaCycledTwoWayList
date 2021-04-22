@@ -29,7 +29,7 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
     private implemitations.TwoWayListItem<T> head;
     private implemitations.TwoWayListItem<T> tail;
 
-    static int NOT_FOUND = -1;
+    static final int NOT_FOUND = -1;
 
     public CycledTwoWayList(){
         makeEmpty();
