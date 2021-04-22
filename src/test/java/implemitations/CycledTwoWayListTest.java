@@ -11,7 +11,7 @@ class CycledTwoWayListTest {
 
     @Test
     void append() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
         assertEquals(0, testList.length());
         testList.append(1);
         assertEquals(1, testList.length());
@@ -29,7 +29,7 @@ class CycledTwoWayListTest {
 
     @Test
     void remove() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
         testList.append(1);
         testList.append(2);
         testList.append(3);
@@ -57,7 +57,7 @@ class CycledTwoWayListTest {
 
     @Test
     void length() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
 
         assertEquals(0, testList.length());
 
@@ -76,7 +76,7 @@ class CycledTwoWayListTest {
 
     @Test
     void isEmpty() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
 
         assertTrue(testList.isEmpty());
 
@@ -99,7 +99,7 @@ class CycledTwoWayListTest {
 
     @Test
     void indexOf() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
         testList.append(1);
         testList.append(2);
         testList.append(3);
@@ -123,7 +123,7 @@ class CycledTwoWayListTest {
 
     @Test
     void map() {
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
         testList.append(1);
         testList.append(2);
         testList.append(3);
@@ -139,8 +139,8 @@ class CycledTwoWayListTest {
     }
 
     @Test
-    void atIndex(){
-        CycledTwoWayList<Integer> testList = new CycledTwoWayList<Integer>();
+    void atIndex() throws Exception {
+        CycledTwoWayList<Integer> testList = new CycledTwoWayList<>();
         testList.append(1);
         testList.append(2);
         testList.append(3);
