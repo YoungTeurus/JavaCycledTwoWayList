@@ -25,9 +25,10 @@ public interface List<T> {
     /**
      * Возвращает элемент из списка на индексе index.
      * @param index Индекс элемента в списке.
+     * @exception Exception Вызывается исключение, если список пуст.
      * @return Элемент на указанном индексе или null, если индекс находится за пределами списка.
      */
-    T atIndex(int index);
+    T atIndex(int index) throws Exception;
 
     /**
      * Возвращает длину списка.

@@ -151,20 +151,20 @@ public class CycledTwoWayList<T> implements TwoWayList<T> {
         return index.get();
     }
 
-    public T atIndex(int index){
+    public T atIndex(int index) throws Exception {
         if (index < 0){
             throw new InvalidParameterException("Index must be positive!");
         }
-        AtomicReference<T> returnItem = new AtomicReference<>(null);
-        AtomicInteger itemsLeft = new AtomicInteger(index);
-        map(item -> {
-            if (((Integer)itemsLeft.getAndDecrement()).equals(0)){  // Если оставшееся число элементов для перебора стало равным 0...
-                returnItem.set(item);
-                return false;
-            }
-            return true;
-        });
-        return returnItem.get();
+        if (isEmpty()){
+            throw new Exception("Array is empty!");
+        }
+
+        implemitations.TwoWayListItem<T> currentElement = head;
+        for(int i = 0; i < index; i++){
+            currentElement = currentElement.getNext();
+        }
+
+        return currentElement.getItem();
     }
 
     public int length() {
